@@ -28,16 +28,22 @@ enum APIConfig {
 
     // MARK: - Backend
     //
-    // The base URL of *your* backend proxy. The Backend/ folder ships a
-    // Cloudflare Worker you can deploy with `wrangler deploy` in under
-    // a minute; swap in any URL once it's live.
+    // The base URL of *your* Next.js backend (separate repo at
+    // /Users/tejus/Developer/build/legitimagebackend). The app posts
+    // to `{baseURL}/api/v1/synthid` and `{baseURL}/api/v1/sightengine`;
+    // route paths are owned by `BackendProxyDetector`.
+    //
+    // Local dev tips:
+    //   • Simulator + `npm run dev`: use `http://localhost:3000` and add
+    //     `NSAppTransportSecurity → NSAllowsLocalNetworking = YES` to
+    //     the app's Info.plist so ATS lets plaintext through.
+    //   • Real device: easiest is `ngrok http 3000` → use the https URL.
     enum Backend {
-        static let baseURL: URL = URL(string: "https://YOUR_BACKEND.workers.dev")!
+        static let baseURL: URL = URL(string: "https://YOUR_BACKEND_URL")!
 
-        /// Optional app token sent as `Authorization: Bearer <token>`.
-        /// Use it for basic abuse protection / rate limiting on the
-        /// backend. Leave blank to disable. Even if intercepted, it
-        /// only grants access to your backend — not to vendor keys.
+        /// Bearer token sent in `Authorization`. Must equal `APP_TOKEN`
+        /// in the backend's `.env.local`. Will be replaced by an App
+        /// Attest-issued session token once that's wired up.
         static let appToken: String = ""
 
         /// Per-request timeout. SynthID + Sightengine both usually
@@ -61,6 +67,6 @@ enum APIConfig {
     // Detectors call this before making a network request so the UI
     // can surface a clean "not configured" status instead of a 404.
     static var isBackendConfigured: Bool {
-        !Backend.baseURL.absoluteString.contains("YOUR_BACKEND")
+        !Backend.baseURL.absoluteString.contains("YOUR_BACKEND_URL")
     }
 }

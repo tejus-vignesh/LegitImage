@@ -60,8 +60,8 @@ struct BackendProxyDetector: Detector {
 
     private var route: String {
         switch kind {
-        case .synthID:     return "synthid"
-        case .sightengine: return "sightengine"
+        case .synthID:     return "api/v1/synthid"
+        case .sightengine: return "api/v1/sightengine"
         case .c2pa:        return ""
         }
     }

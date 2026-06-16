@@ -28,8 +28,8 @@ final class ImageAnalyzer {
         input: ImageInput,
         detectors: [Detector] = [
             C2PADetector(),
-            SynthIDDetector(),
-            SightengineDetector(),
+            BackendProxyDetector(kind: .synthID),
+            BackendProxyDetector(kind: .sightengine),
         ],
         aggregator: VerdictAggregator = VerdictAggregatorRegistry.current
     ) {

@@ -14,29 +14,9 @@ struct ContentView: View {
                 pendingInput = input
             }
             .navigationDestination(item: $pendingInput) { input in
-                // Placeholder until ResultsView lands in the next milestone.
-                ResultsPlaceholderView(input: input)
+                ResultsView(input: input)
             }
         }
-    }
-}
-
-private struct ResultsPlaceholderView: View {
-    let input: ImageInput
-
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(uiImage: input.image)
-                .resizable()
-                .scaledToFit()
-                .frame(maxHeight: 240)
-                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-            Text("Source: \(input.source.displayName)")
-                .foregroundStyle(.secondary)
-        }
-        .padding()
-        .navigationTitle("Results")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

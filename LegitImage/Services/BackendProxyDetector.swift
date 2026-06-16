@@ -82,9 +82,6 @@ struct BackendProxyDetector: Detector {
         request.httpMethod = "POST"
         request.timeoutInterval = APIConfig.Backend.requestTimeout
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        if !APIConfig.Backend.appToken.isEmpty {
-            request.setValue("Bearer \(APIConfig.Backend.appToken)", forHTTPHeaderField: "Authorization")
-        }
         request.httpBody = buildMultipartBody(boundary: boundary, input: input)
 
         let (data, urlResponse) = try await session.data(for: request)

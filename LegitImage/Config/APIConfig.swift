@@ -33,18 +33,12 @@ enum APIConfig {
     // to `{baseURL}/api/v1/synthid` and `{baseURL}/api/v1/sightengine`;
     // route paths are owned by `BackendProxyDetector`.
     //
-    // Local dev tips:
-    //   • Simulator + `npm run dev`: use `http://localhost:3000` and add
-    //     `NSAppTransportSecurity → NSAllowsLocalNetworking = YES` to
-    //     the app's Info.plist so ATS lets plaintext through.
-    //   • Real device: easiest is `ngrok http 3000` → use the https URL.
+    // Simulator dev: run `npm run dev` and leave `baseURL` as
+    // `http://localhost:3000`. Add `NSAppTransportSecurity →
+    // NSAllowsLocalNetworking = YES` to the app's Info.plist so ATS
+    // lets plaintext through.
     enum Backend {
-        static let baseURL: URL = URL(string: "https://YOUR_BACKEND_URL")!
-
-        /// Bearer token sent in `Authorization`. Must equal `APP_TOKEN`
-        /// in the backend's `.env.local`. Will be replaced by an App
-        /// Attest-issued session token once that's wired up.
-        static let appToken: String = ""
+        static let baseURL: URL = URL(string: "http://localhost:3000")!
 
         /// Per-request timeout. SynthID + Sightengine both usually
         /// return within a couple of seconds, but we leave headroom
@@ -68,5 +62,6 @@ enum APIConfig {
     // can surface a clean "not configured" status instead of a 404.
     static var isBackendConfigured: Bool {
         !Backend.baseURL.absoluteString.contains("YOUR_BACKEND_URL")
+            && !Backend.baseURL.absoluteString.isEmpty
     }
 }
